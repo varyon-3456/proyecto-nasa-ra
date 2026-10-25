@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,453 +16,372 @@
     <script src="/js/dashboard.js" defer></script>
     <script src="/js/app.js" defer></script>
     <script src="/js/ai.js" defer></script>
+    <script src="/js/i18n.js" defer></script>
 </head>
-
 <body>
-    <header class="topbar">
-        <a class="brand" href="/" aria-label="Inicio de AgroOrbit">
-            <span class="brand-icon">✳</span>
-            <span>
-                <strong>AgroOrbit</strong>
-                <small>Agricultura inteligente</small>
-            </span>
-        </a>
+<header class="topbar">
+    <a class="brand" href="/" aria-label="Inicio de AgroOrbit">
+        <span class="brand-icon">✳</span>
+        <span>
+            <strong>AgroOrbit</strong>
+            <small data-i18n="brandSubtitle">Agricultura inteligente</small>
+        </span>
+    </a>
+
+    <div class="topbar-actions">
+        <button
+            id="language-toggle"
+            class="language-toggle"
+            type="button"
+            aria-label="Switch to English"
+        >🇺🇸 EN</button>
 
         <span class="status">
             <span class="status-dot"></span>
-            Prototipo funcional
+            <span data-i18n="prototype">Prototipo funcional</span>
         </span>
-    </header>
+    </div>
+</header>
 
-    <main class="container">
+<main class="container">
 
-        <!-- PRESENTACIÓN -->
-        <section class="hero">
-            <p class="eyebrow">AGRICULTURA BASADA EN DATOS</p>
-            <h1>Cultiva con inteligencia.<br>Decide con evidencia.</h1>
+    <!-- PRESENTACIÓN -->
+    <section class="hero">
+        <p class="eyebrow" data-i18n="eyebrow">
+            AGRICULTURA BASADA EN DATOS
+        </p>
 
-            <p class="hero-description">
-                Analiza las condiciones ambientales de tu ubicación
-                y prepara decisiones de rotación de cultivos.
-            </p>
-        </section>
+        <h1>
+            <span data-i18n="heroTitle">Cultiva con inteligencia.</span><br>
+            <span data-i18n="heroTitleSecond">Decide con evidencia.</span>
+        </h1>
 
-        <!-- PASO 01: UBICACIÓN -->
-        <section class="panel" aria-labelledby="location-title">
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">PASO 01</p>
-                    <h2 id="location-title">Ubicación agrícola</h2>
-                </div>
-                <span class="icon-box">⌖</span>
+        <p class="hero-description" data-i18n="heroDescription">
+            Analiza las condiciones ambientales de tu ubicación
+            y prepara decisiones de rotación de cultivos.
+        </p>
+    </section>
+
+    <!-- PASO 01: UBICACIÓN -->
+    <section class="panel" aria-labelledby="location-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow" data-i18n="step1">PASO 01</p>
+                <h2 id="location-title" data-i18n="locationTitle">
+                    Ubicación agrícola
+                </h2>
+            </div>
+            <span class="icon-box">⌖</span>
+        </div>
+
+        <p class="muted" data-i18n="locationDescription">
+            Usa tu ubicación actual o introduce las coordenadas
+            de la parcela que deseas analizar.
+        </p>
+
+        <button
+            id="gps-button"
+            class="button button-primary"
+            type="button"
+            data-i18n="detectLocation"
+        >Detectar mi ubicación</button>
+
+        <div class="separator">
+            <span data-i18n="manualCoordinates">
+                O introduce las coordenadas manualmente
+            </span>
+        </div>
+
+        <form id="location-form">
+            <div class="form-grid">
+                <label>
+                    <span data-i18n="latitude">Latitud</span>
+                    <input
+                        id="latitude"
+                        name="latitude"
+                        type="number"
+                        min="-90"
+                        max="90"
+                        step="any"
+                        placeholder="-9.9300"
+                        required
+                    >
+                </label>
+
+                <label>
+                    <span data-i18n="longitude">Longitud</span>
+                    <input
+                        id="longitude"
+                        name="longitude"
+                        type="number"
+                        min="-180"
+                        max="180"
+                        step="any"
+                        placeholder="-76.2400"
+                        required
+                    >
+                </label>
             </div>
 
-            <p class="muted">
-                Usa tu ubicación actual o introduce las coordenadas
-                de la parcela que deseas analizar.
-            </p>
+            <button
+                class="button button-secondary"
+                type="submit"
+                data-i18n="confirmLocation"
+            >Confirmar ubicación</button>
+        </form>
+
+        <div
+            id="location-result"
+            class="notice"
+            role="status"
+            aria-live="polite"
+            data-i18n="noLocation"
+        >Aún no se ha confirmado ninguna ubicación.</div>
+    </section>
+
+    <!-- PASO 02: DATOS AMBIENTALES -->
+    <section class="panel environment-panel" aria-labelledby="environment-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow" data-i18n="step2">PASO 02</p>
+                <h2 id="environment-title" data-i18n="environmentTitle">
+                    Datos ambientales
+                </h2>
+            </div>
+            <span class="icon-box">☼</span>
+        </div>
+
+        <p class="muted" data-i18n="environmentDescription">
+            Consulta las variables ambientales de las coordenadas
+            confirmadas. Los datos se solicitan a NASA POWER
+            cuando realizas el análisis.
+        </p>
+
+        <div class="environment-controls">
+            <label for="period-days" data-i18n="period">Periodo de consulta</label>
+
+            <select id="period-days">
+                <option value="7" data-i18n="last7Days">Últimos 7 días disponibles</option>
+                <option value="30" selected data-i18n="last30Days">
+                    Últimos 30 días disponibles
+                </option>
+                <option value="90" data-i18n="last90Days">Últimos 90 días disponibles</option>
+            </select>
 
             <button
-                id="gps-button"
+                id="load-environment"
                 class="button button-primary"
                 type="button"
-            >
-                Detectar mi ubicación
-            </button>
+                disabled
+                data-i18n="queryNasa"
+            >Consultar NASA POWER</button>
+        </div>
 
-            <div class="separator">
-                <span>O introduce las coordenadas manualmente</span>
+        <p
+            id="environment-status"
+            class="notice"
+            role="status"
+            aria-live="polite"
+            data-i18n="confirmLocationFirst"
+        >Primero confirma una ubicación.</p>
+
+        <div id="environment-results" class="environment-results"></div>
+        <p id="environment-source" class="muted"></p>
+    </section>
+
+    <!-- PASO 03: ROTACIÓN DE CULTIVOS -->
+    <section class="panel rotation-panel" aria-labelledby="rotation-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow" data-i18n="step3">PASO 03</p>
+                <h2 id="rotation-title" data-i18n="rotationTitle">
+                    Rotación inteligente de cultivos
+                </h2>
+            </div>
+            <span class="icon-box">🌱</span>
+        </div>
+
+        <p class="muted" data-i18n="rotationDescription">
+            Selecciona el cultivo actual para consultar alternativas
+            calculadas por las reglas de AgroOrbit.
+        </p>
+
+        <div class="rotation-controls">
+            <label for="current-crop" data-i18n="currentCrop">Cultivo actual</label>
+
+            <select id="current-crop">
+                <option value="" data-i18n="loadingCrops">Cargando catálogo...</option>
+            </select>
+
+            <button
+                id="load-rotation"
+                class="button button-primary"
+                type="button"
+                disabled
+                data-i18n="analyzeRotation"
+            >Analizar rotación</button>
+        </div>
+
+        <p
+            id="rotation-status"
+            class="notice"
+            role="status"
+            aria-live="polite"
+            data-i18n="loadingCrops"
+        >Cargando cultivos disponibles...</p>
+
+        <div id="rotation-results" class="rotation-results"></div>
+
+        <div id="rotation-warning" class="rotation-warning" hidden></div>
+    </section>
+
+    <!-- PASO 04: INTELIGENCIA ARTIFICIAL -->
+    <section class="panel ai-panel" aria-labelledby="ai-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow" data-i18n="step4">PASO 04</p>
+                <h2 id="ai-title" data-i18n="aiTitle">
+                    Predicción inteligente de cultivos
+                </h2>
+            </div>
+            <span class="icon-box">AI</span>
+        </div>
+
+        <p class="muted" data-i18n="aiDescription">
+            Introduce los datos de la parcela para comparar las
+            predicciones de los modelos de Machine Learning
+            y Deep Learning.
+        </p>
+
+        <form id="ai-form">
+            <div class="ai-form-grid">
+                <label for="ai-n">
+                    <span data-i18n="nitrogen">Nitrógeno (N)</span>
+                    <input id="ai-n" name="N" type="number" step="any" value="90" required>
+                </label>
+
+                <label for="ai-p">
+                    <span data-i18n="phosphorus">Fósforo (P)</span>
+                    <input id="ai-p" name="P" type="number" step="any" value="42" required>
+                </label>
+
+                <label for="ai-k">
+                    <span data-i18n="potassium">Potasio (K)</span>
+                    <input id="ai-k" name="K" type="number" step="any" value="43" required>
+                </label>
+
+                <label for="ai-temperature">
+                    <span data-i18n="temperature">Temperatura (°C)</span>
+                    <input id="ai-temperature" name="temperature" type="number" step="any" value="20.9" required>
+                </label>
+
+                <label for="ai-humidity">
+                    <span data-i18n="humidity">Humedad (%)</span>
+                    <input id="ai-humidity" name="humidity" type="number" step="any" value="82" required>
+                </label>
+
+                <label for="ai-ph">
+                    <span data-i18n="soilPh">pH del suelo</span>
+                    <input id="ai-ph" name="ph" type="number" min="0" max="14" step="any" value="6.5" required>
+                </label>
+
+                <label for="ai-rainfall">
+                    <span data-i18n="rainfall">Lluvia (mm)</span>
+                    <input id="ai-rainfall" name="rainfall" type="number" min="0" step="any" value="202" required>
+                </label>
             </div>
 
-            <form id="location-form">
-                <div class="form-grid">
-                    <label>
-                        Latitud
-                        <input
-                            id="latitude"
-                            name="latitude"
-                            type="number"
-                            min="-90"
-                            max="90"
-                            step="any"
-                            placeholder="-9.9300"
-                            required
-                        >
-                    </label>
-
-                    <label>
-                        Longitud
-                        <input
-                            id="longitude"
-                            name="longitude"
-                            type="number"
-                            min="-180"
-                            max="180"
-                            step="any"
-                            placeholder="-76.2400"
-                            required
-                        >
-                    </label>
-                </div>
-
-                <button
-                    class="button button-secondary"
-                    type="submit"
-                >
-                    Confirmar ubicación
-                </button>
-            </form>
-
-            <div
-                id="location-result"
-                class="notice"
-                role="status"
-                aria-live="polite"
-            >
-                Aún no se ha confirmado ninguna ubicación.
-            </div>
-        </section>
-
-        <!-- PASO 02: DATOS AMBIENTALES -->
-        <section
-            class="panel environment-panel"
-            aria-labelledby="environment-title"
-        >
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">PASO 02</p>
-                    <h2 id="environment-title">Datos ambientales</h2>
-                </div>
-                <span class="icon-box">☼</span>
-            </div>
-
-            <p class="muted">
-                Consulta las variables ambientales de las coordenadas
-                confirmadas. Los datos se solicitan a NASA POWER
-                cuando realizas el análisis.
-            </p>
-
-            <div class="environment-controls">
-                <label for="period-days">Periodo de consulta</label>
-
-                <select id="period-days">
-                    <option value="7">Últimos 7 días disponibles</option>
-                    <option value="30" selected>
-                        Últimos 30 días disponibles
-                    </option>
-                    <option value="90">Últimos 90 días disponibles</option>
-                </select>
-
-                <button
-                    id="load-environment"
-                    class="button button-primary"
-                    type="button"
-                    disabled
-                >
-                    Consultar NASA POWER
-                </button>
-            </div>
-
-            <p
-                id="environment-status"
-                class="notice"
-                role="status"
-                aria-live="polite"
-            >
-                Primero confirma una ubicación.
-            </p>
-
-            <div
-                id="environment-results"
-                class="environment-results"
-            ></div>
-
-            <p id="environment-source" class="muted"></p>
-        </section>
-
-        <!-- PASO 03: ROTACIÓN DE CULTIVOS -->
-        <section
-            class="panel rotation-panel"
-            aria-labelledby="rotation-title"
-        >
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">PASO 03</p>
-                    <h2 id="rotation-title">
-                        Rotación inteligente de cultivos
-                    </h2>
-                </div>
-                <span class="icon-box">🌱</span>
-            </div>
-
-            <p class="muted">
-                Selecciona el cultivo actual para consultar alternativas
-                calculadas por las reglas de AgroOrbit.
-            </p>
-
-            <div class="rotation-controls">
-                <label for="current-crop">Cultivo actual</label>
-
-                <select id="current-crop">
-                    <option value="">Cargando catálogo...</option>
-                </select>
-
-                <button
-                    id="load-rotation"
-                    class="button button-primary"
-                    type="button"
-                    disabled
-                >
-                    Analizar rotación
-                </button>
-            </div>
-
-            <p
-                id="rotation-status"
-                class="notice"
-                role="status"
-                aria-live="polite"
-            >
-                Cargando cultivos disponibles...
-            </p>
-
-            <div
-                id="rotation-results"
-                class="rotation-results"
-            ></div>
-
-            <div
-                id="rotation-warning"
-                class="rotation-warning"
-                hidden
-            ></div>
-        </section>
-
-        <!-- PASO 04: INTELIGENCIA ARTIFICIAL -->
-        <section class="panel ai-panel" aria-labelledby="ai-title">
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">PASO 04</p>
-                    <h2 id="ai-title">
-                        Predicción inteligente de cultivos
-                    </h2>
-                </div>
-                <span class="icon-box">AI</span>
-            </div>
-
-            <p class="muted">
-                Introduce los datos de la parcela para comparar las
-                predicciones de los modelos de Machine Learning
-                y Deep Learning.
-            </p>
-
-            <form id="ai-form">
-                <div class="ai-form-grid">
-                    <label for="ai-n">
-                        Nitrógeno (N)
-                        <input
-                            id="ai-n"
-                            name="N"
-                            type="number"
-                            step="any"
-                            value="90"
-                            required
-                        >
-                    </label>
-
-                    <label for="ai-p">
-                        Fósforo (P)
-                        <input
-                            id="ai-p"
-                            name="P"
-                            type="number"
-                            step="any"
-                            value="42"
-                            required
-                        >
-                    </label>
-
-                    <label for="ai-k">
-                        Potasio (K)
-                        <input
-                            id="ai-k"
-                            name="K"
-                            type="number"
-                            step="any"
-                            value="43"
-                            required
-                        >
-                    </label>
-
-                    <label for="ai-temperature">
-                        Temperatura (°C)
-                        <input
-                            id="ai-temperature"
-                            name="temperature"
-                            type="number"
-                            step="any"
-                            value="20.9"
-                            required
-                        >
-                    </label>
-
-                    <label for="ai-humidity">
-                        Humedad (%)
-                        <input
-                            id="ai-humidity"
-                            name="humidity"
-                            type="number"
-                            step="any"
-                            value="82"
-                            required
-                        >
-                    </label>
-
-                    <label for="ai-ph">
-                        pH del suelo
-                        <input
-                            id="ai-ph"
-                            name="ph"
-                            type="number"
-                            min="0"
-                            max="14"
-                            step="any"
-                            value="6.5"
-                            required
-                        >
-                    </label>
-
-                    <label for="ai-rainfall">
-                        Lluvia (mm)
-                        <input
-                            id="ai-rainfall"
-                            name="rainfall"
-                            type="number"
-                            min="0"
-                            step="any"
-                            value="202"
-                            required
-                        >
-                    </label>
-                </div>
-
-                <p class="muted">
-                    Introduce mediciones de la parcela cuando estén
-                    disponibles. Los valores iniciales son únicamente
-                    de demostración.
-                </p>
-
-                <button
-                    id="ai-predict-button"
-                    class="button button-primary"
-                    type="submit"
-                >
-                    Predecir cultivo
-                </button>
-            </form>
-
-            <p
-                id="ai-status"
-                class="notice"
-                role="status"
-                aria-live="polite"
-            >
-                Listo para realizar una predicción experimental.
-            </p>
-
-            <div id="ai-results" class="ai-results" hidden></div>
-
-            <div
-                id="ai-warning"
-                class="rotation-warning"
-                hidden
-            ></div>
-        </section>
-
-        <!-- RESUMEN DE FUNCIONALIDADES INTEGRADAS -->
-        <section class="section-grid">
-            <article class="panel feature-card">
-                <span class="feature-icon">☼</span>
-
-                <h2>Datos ambientales</h2>
-
-                <p class="muted">
-                    Consulta de temperatura, precipitación y radiación
-                    solar mediante la integración con NASA POWER.
-                </p>
-
-                <span class="tag">
-                    Consulta NASA POWER integrada
-                </span>
-            </article>
-
-            <article class="panel feature-card">
-                <span class="feature-icon">♧</span>
-
-                <h2>Rotación de cultivos</h2>
-
-                <p class="muted">
-                    Análisis de alternativas mediante las reglas de
-                    rotación implementadas en AgroOrbit.
-                </p>
-
-                <span class="tag">
-                    Motor de reglas integrado
-                </span>
-            </article>
-
-            <article class="panel feature-card">
-                <span class="feature-icon">⌘</span>
-
-                <h2>Inteligencia artificial</h2>
-
-                <p class="muted">
-                    Comparación de resultados experimentales de los
-                    modelos de Machine Learning y Deep Learning.
-                </p>
-
-                <span class="tag">
-                    Modelos entrenados e integrados
-                </span>
-            </article>
-        </section>
-
-        <!-- ESTADO TÉCNICO -->
-        <section class="panel" aria-labelledby="system-title">
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">ESTADO TÉCNICO</p>
-                    <h2 id="system-title">Estado del sistema</h2>
-                </div>
-            </div>
-
-            <p
-                id="system-status"
-                class="muted"
-                role="status"
-                aria-live="polite"
-            >
-                Comprobando el servidor...
+            <p class="muted" data-i18n="demoValues">
+                Introduce mediciones de la parcela cuando estén disponibles.
+                Los valores iniciales son únicamente de demostración.
             </p>
 
             <button
-                id="check-server"
-                class="button button-secondary"
-                type="button"
-            >
-                Comprobar servidor
-            </button>
-        </section>
+                id="ai-predict-button"
+                class="button button-primary"
+                type="submit"
+                data-i18n="predictCrop"
+            >Predecir cultivo</button>
+        </form>
 
-        <!-- PIE DE PÁGINA -->
-        <footer>
-            <p>
-                AgroOrbit · Prototipo académico funcional ·
-                Los resultados de IA son experimentales y requieren
-                validación con datos agrícolas representativos del Perú.
+        <p
+            id="ai-status"
+            class="notice"
+            role="status"
+            aria-live="polite"
+            data-i18n="readyPrediction"
+        >Listo para realizar una predicción experimental.</p>
+
+        <div id="ai-results" class="ai-results" hidden></div>
+        <div id="ai-warning" class="rotation-warning" hidden></div>
+    </section>
+
+    <!-- FUNCIONALIDADES -->
+    <section class="section-grid">
+        <article class="panel feature-card">
+            <span class="feature-icon">☼</span>
+            <h2 data-i18n="featureEnvironment">Datos ambientales</h2>
+            <p class="muted" data-i18n="environmentFeatureDescription">
+                Consulta de temperatura, precipitación y radiación
+                solar mediante la integración con NASA POWER.
             </p>
-        </footer>
+            <span class="tag" data-i18n="nasaIntegrated">Consulta NASA POWER integrada</span>
+        </article>
 
-    </main>
+        <article class="panel feature-card">
+            <span class="feature-icon">♧</span>
+            <h2 data-i18n="featureRotation">Rotación de cultivos</h2>
+            <p class="muted" data-i18n="rotationFeatureDescription">
+                Análisis de alternativas mediante las reglas de
+                rotación implementadas en AgroOrbit.
+            </p>
+            <span class="tag" data-i18n="rulesIntegrated">Motor de reglas integrado</span>
+        </article>
+
+        <article class="panel feature-card">
+            <span class="feature-icon">⌘</span>
+            <h2 data-i18n="featureAI">Inteligencia artificial</h2>
+            <p class="muted" data-i18n="aiFeatureDescription">
+                Comparación de resultados experimentales de los
+                modelos de Machine Learning y Deep Learning.
+            </p>
+            <span class="tag" data-i18n="modelsIntegrated">Modelos entrenados e integrados</span>
+        </article>
+    </section>
+
+    <!-- ESTADO TÉCNICO -->
+    <section class="panel" aria-labelledby="system-title">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow" data-i18n="technicalStatus">ESTADO TÉCNICO</p>
+                <h2 id="system-title" data-i18n="systemTitle">Estado del sistema</h2>
+            </div>
+        </div>
+
+        <p
+            id="system-status"
+            class="muted"
+            role="status"
+            aria-live="polite"
+            data-i18n="checkingServer"
+        >Comprobando el servidor...</p>
+
+        <button
+            id="check-server"
+            class="button button-secondary"
+            type="button"
+            data-i18n="checkServer"
+        >Comprobar servidor</button>
+    </section>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p data-i18n="footer">
+            AgroOrbit · Prototipo académico funcional · Los resultados
+            de IA son experimentales y requieren validación con datos
+            agrícolas representativos del Perú.
+        </p>
+    </footer>
+</main>
 </body>
 </html>
