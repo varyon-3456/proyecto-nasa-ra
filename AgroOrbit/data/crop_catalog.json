@@ -1,0 +1,47 @@
+{
+  "version": "1.0",
+  "region": "Perú",
+  "notice": "Catálogo inicial demostrativo. Verificar las condiciones locales antes de sembrar.",
+  "crops": [
+    {
+      "id": "maiz",
+      "name": "Maíz",
+      "family": "Poaceae",
+      "nitrogen_demand": "high",
+      "water_demand": "medium",
+      "notes": "Cultivo de alta demanda de nutrientes; requiere evaluar suelo, variedad y clima."
+    },
+    {
+      "id": "frijol",
+      "name": "Frijol",
+      "family": "Fabaceae",
+      "nitrogen_demand": "low",
+      "water_demand": "medium",
+      "notes": "Leguminosa; puede contribuir a la fijación de nitrógeno según variedad y manejo."
+    },
+    {
+      "id": "papa",
+      "name": "Papa",
+      "family": "Solanaceae",
+      "nitrogen_demand": "medium",
+      "water_demand": "medium",
+      "notes": "Requiere considerar altitud, temperatura, drenaje y presión de enfermedades."
+    },
+    {
+      "id": "quinua",
+      "name": "Quinua",
+      "family": "Amaranthaceae",
+      "nitrogen_demand": "medium",
+      "water_demand": "low",
+      "notes": "La adaptación depende de la variedad, altitud, suelo y régimen de lluvias."
+    },
+    {
+      "id": "avena",
+      "name": "Avena",
+      "family": "Poaceae",
+      "nitrogen_demand": "medium",
+      "water_demand": "medium",
+      "notes": "Puede utilizarse en sistemas de rotación según el objetivo productivo."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "rules": {
+    "same_family_penalty": 3,
+    "legume_after_high_nitrogen_demand_bonus": 2
+  },
+  "explanations": {
+    "same_family": "Se priorizan cultivos de familias diferentes para reducir la repetición de problemas asociados a un mismo grupo de cultivos.",
+    "legume_after_high_demand": "Se considera una leguminosa como posible sucesora de un cultivo con alta demanda de nitrógeno. El beneficio real depende del manejo y de las condiciones del terreno."
+  },
+  "warning": "Las reglas generan sugerencias preliminares. No sustituyen el análisis del suelo, el historial de plagas ni la asesoría agrícola local."
+}
